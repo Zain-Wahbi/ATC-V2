@@ -2,22 +2,23 @@
 
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Rule;
 use Livewire\Volt\Component;
 
 new class extends Component
 {
+    #[Rule('required|string|current_password:customer')]
     public string $password = '';
 
-    /**
-     * Delete the currently authenticated user.
-     */
-    public function deleteUser(Logout $logout): void
+    public function deleteCustomer(Logout $logout): void
     {
-        $this->validate([
-            'password' => ['required', 'string', 'current_password'],
-        ]);
+        $this->validate();
 
-        tap(Auth::user(), $logout(...))->delete();
+        $customer = Auth::guard('customer')->user();
+
+        $logout();
+
+        $customer->delete();
 
         $this->redirect('/', navigate: true);
     }
@@ -30,24 +31,23 @@ new class extends Component
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted.') }}
         </p>
     </header>
 
     <x-danger-button
         x-data=""
-        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
+        x-on:click.prevent="$dispatch('open-modal', 'confirm-customer-deletion')"
     >{{ __('Delete Account') }}</x-danger-button>
 
-    <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
-        <form wire:submit="deleteUser" class="p-6">
-
+    <x-modal name="confirm-customer-deletion" :show="$errors->isNotEmpty()" focusable>
+        <form wire:submit="deleteCustomer" class="p-6">
             <h2 class="text-lg font-medium text-gray-900">
                 {{ __('Are you sure you want to delete your account?') }}
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm.') }}
             </p>
 
             <div class="mt-6">
