@@ -28,7 +28,7 @@ class BookingResource extends Resource
                     ->searchable()
                     ->preload()
                     ->required(),
-    
+
                 Forms\Components\Select::make('flight_id')
                     ->relationship('flight', 'flight_number')
                     ->searchable()
@@ -38,13 +38,35 @@ class BookingResource extends Resource
                     ->afterStateUpdated(function ($state, callable $set, callable $get) {
                         self::updateTotalCost($state, $get('overweight'), $set);
                     }),
-    
+
                 Forms\Components\Select::make('seat_id')
                     ->relationship('seat', 'seat_number')
                     ->searchable()
                     ->preload()
-                    ->required(),
-    
+                    ->required()
+                    ->rule(function (callable $get) {
+                        return function (string $attribute, $value, callable $fail) use ($get) {
+                            $seat = \App\Models\Seat::find($value);
+
+                            if (! $seat) {
+                                return;
+                            }
+
+                            if ($seat->is_booked) {
+                                $bookingId = request()->route('record');
+                                $existingBooking = \App\Models\Booking::where('seat_id', $seat->id)->first();
+
+                                $belongsToCurrentBooking = $bookingId
+                                    && $existingBooking
+                                    && $existingBooking->id == $bookingId;
+
+                                if (! $belongsToCurrentBooking) {
+                                    $fail('This seat is already booked.');
+                                }
+                            }
+                        };
+                    }),
+
                 Forms\Components\TextInput::make('overweight')
                     ->required()
                     ->numeric()
@@ -54,7 +76,7 @@ class BookingResource extends Resource
                     ->afterStateUpdated(function ($state, callable $set, callable $get) {
                         self::updateTotalCost($get('flight_id'), $state, $set);
                     }),
-    
+
                 Forms\Components\TextInput::make('total_cost')
                     ->required()
                     ->numeric()
@@ -62,30 +84,29 @@ class BookingResource extends Resource
                     ->disabled()
                     ->dehydrated()
                     ->helperText('Auto-calculated: flight price + overweight charge'),
-    
+
                 Forms\Components\DateTimePicker::make('booking_date')
                     ->required()
                     ->default(now())
                     ->native(false),
             ]);
     }
-    
+
     protected static function updateTotalCost($flightId, $overweight, callable $set): void
     {
         if (! $flightId) {
             return;
         }
-    
+
         $flight = \App\Models\Flight::find($flightId);
-    
+
         if (! $flight) {
             return;
         }
-    
+
         $overweightCost = ($overweight ?? 0) * $flight->overweight_charge;
         $set('total_cost', $flight->price + $overweightCost);
     }
-    
 
     public static function table(Table $table): Table
     {
@@ -93,18 +114,18 @@ class BookingResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('booking_reference')
                     ->searchable(),
-                    Tables\Columns\TextColumn::make('customer.first_name')
-    ->label('Customer')
-    ->searchable()
-    ->sortable(),
-Tables\Columns\TextColumn::make('flight.flight_number')
-    ->label('Flight')
-    ->searchable()
-    ->sortable(),
-Tables\Columns\TextColumn::make('seat.seat_number')
-    ->label('Seat')
-    ->searchable()
-    ->sortable(),
+                Tables\Columns\TextColumn::make('customer.first_name')
+                    ->label('Customer')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('flight.flight_number')
+                    ->label('Flight')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('seat.seat_number')
+                    ->label('Seat')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('total_cost')
                     ->numeric()
                     ->sortable(),
