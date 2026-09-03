@@ -78,13 +78,17 @@ class SeatResource extends Resource
                 Tables\Filters\SelectFilter::make('flight_id')
                     ->relationship('flight', 'flight_number')
                     ->label('Flight'),
-
+            
                 Tables\Filters\TernaryFilter::make('is_booked')
                     ->label('Booking Status')
                     ->boolean()
                     ->trueLabel('Booked')
                     ->falseLabel('Available')
                     ->native(false),
+            ])
+            ->headerActions([
+                Tables\Actions\ExportAction::make()
+                    ->exporter(\App\Filament\Exports\SeatExporter::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -177,6 +177,10 @@ class BookingResource extends Resource
                             );
                     }),
             ])
+            ->headerActions([
+                Tables\Actions\ExportAction::make()
+                    ->exporter(\App\Filament\Exports\BookingExporter::class),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
