@@ -17,78 +17,89 @@ class BookingResource extends Resource
 {
     protected static ?string $model = Booking::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
+    protected static ?string $navigationGroup = 'Flight Operations';
+    
+    protected static ?int $navigationSort = 3;
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('customer_id')
-                    ->relationship('customer', 'first_name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+                Forms\Components\Section::make('Booking Details')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\Select::make('customer_id')
+                            ->relationship('customer', 'first_name')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
 
-                Forms\Components\Select::make('flight_id')
-                    ->relationship('flight', 'flight_number')
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->live()
-                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                        self::updateTotalCost($state, $get('overweight'), $set);
-                    }),
+                        Forms\Components\Select::make('flight_id')
+                            ->relationship('flight', 'flight_number')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                self::updateTotalCost($state, $get('overweight'), $set);
+                            }),
 
-                Forms\Components\Select::make('seat_id')
-                    ->relationship('seat', 'seat_number')
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->rule(function (callable $get) {
-                        return function (string $attribute, $value, callable $fail) use ($get) {
-                            $seat = \App\Models\Seat::find($value);
+                        Forms\Components\Select::make('seat_id')
+                            ->relationship('seat', 'seat_number')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->rule(function (callable $get) {
+                                return function (string $attribute, $value, callable $fail) use ($get) {
+                                    $seat = \App\Models\Seat::find($value);
 
-                            if (! $seat) {
-                                return;
-                            }
+                                    if (! $seat) {
+                                        return;
+                                    }
 
-                            if ($seat->is_booked) {
-                                $bookingId = request()->route('record');
-                                $existingBooking = \App\Models\Booking::where('seat_id', $seat->id)->first();
+                                    if ($seat->is_booked) {
+                                        $bookingId = request()->route('record');
+                                        $existingBooking = \App\Models\Booking::where('seat_id', $seat->id)->first();
 
-                                $belongsToCurrentBooking = $bookingId
-                                    && $existingBooking
-                                    && $existingBooking->id == $bookingId;
+                                        $belongsToCurrentBooking = $bookingId
+                                            && $existingBooking
+                                            && $existingBooking->id == $bookingId;
 
-                                if (! $belongsToCurrentBooking) {
-                                    $fail('This seat is already booked.');
-                                }
-                            }
-                        };
-                    }),
+                                        if (! $belongsToCurrentBooking) {
+                                            $fail('This seat is already booked.');
+                                        }
+                                    }
+                                };
+                            }),
 
-                Forms\Components\TextInput::make('overweight')
-                    ->required()
-                    ->numeric()
-                    ->default(0)
-                    ->suffix('kg')
-                    ->live()
-                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                        self::updateTotalCost($get('flight_id'), $state, $set);
-                    }),
+                        Forms\Components\DateTimePicker::make('booking_date')
+                            ->required()
+                            ->default(now())
+                            ->native(false),
+                    ]),
 
-                Forms\Components\TextInput::make('total_cost')
-                    ->required()
-                    ->numeric()
-                    ->prefix('$')
-                    ->disabled()
-                    ->dehydrated()
-                    ->helperText('Auto-calculated: flight price + overweight charge'),
+                Forms\Components\Section::make('Cost')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('overweight')
+                            ->required()
+                            ->numeric()
+                            ->default(0)
+                            ->suffix('kg')
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                self::updateTotalCost($get('flight_id'), $state, $set);
+                            }),
 
-                Forms\Components\DateTimePicker::make('booking_date')
-                    ->required()
-                    ->default(now())
-                    ->native(false),
+                        Forms\Components\TextInput::make('total_cost')
+                            ->required()
+                            ->numeric()
+                            ->prefix('$')
+                            ->disabled()
+                            ->dehydrated()
+                            ->helperText('Auto-calculated: flight price + overweight charge'),
+                    ]),
             ]);
     }
 
@@ -145,7 +156,26 @@ class BookingResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('flight_id')
+                    ->relationship('flight', 'flight_number')
+                    ->label('Flight'),
+            
+                Tables\Filters\Filter::make('booking_date')
+                    ->form([
+                        Forms\Components\DatePicker::make('from'),
+                        Forms\Components\DatePicker::make('until'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('booking_date', '>=', $date),
+                            )
+                            ->when(
+                                $data['until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('booking_date', '<=', $date),
+                            );
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
