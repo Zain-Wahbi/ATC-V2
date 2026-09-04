@@ -163,6 +163,10 @@ public static function table(Table $table): Table
                             );
                     }),
             ])
+            ->headerActions([
+                Tables\Actions\ExportAction::make()
+                    ->exporter(\App\Filament\Exports\FlightExporter::class),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
