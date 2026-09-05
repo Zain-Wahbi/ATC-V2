@@ -35,6 +35,10 @@ new class extends Component
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('flights.index')" :active="request()->routeIs('flights.*')" wire:navigate>
+                        {{ __('Flights') }}
+                    </x-nav-link>
+
                     <x-nav-link :href="route('my-bookings')" :active="request()->routeIs('my-bookings')" wire:navigate>
                         {{ __('My Bookings') }}
                     </x-nav-link>
@@ -92,6 +96,10 @@ new class extends Component
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('flights.index')" :active="request()->routeIs('flights.*')" wire:navigate>
+                {{ __('Flights') }}
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('my-bookings')" :active="request()->routeIs('my-bookings')" wire:navigate>
