@@ -63,10 +63,10 @@ new #[Layout('layouts.app')] class extends Component
 }; ?>
 
 <div>
-    <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
         @if ($success_message)
-            <div class="p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg">
+            <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-lg">
                 {{ $success_message }}
                 <a href="{{ route('my-bookings') }}" wire:navigate class="underline font-medium ms-2">
                     {{ __('View My Bookings') }}
@@ -74,12 +74,12 @@ new #[Layout('layouts.app')] class extends Component
             </div>
         @endif
 
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <h2 class="text-lg font-medium text-gray-900 mb-4">
+        <div class="p-4 sm:p-8 bg-white shadow-sm rounded-2xl border border-gray-100">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">
                 {{ $flight->flight_number }} — {{ $flight->departure_city }} → {{ $flight->destination_city }}
             </h2>
 
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm mb-6">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm mb-2">
                 <div>
                     <span class="text-gray-500">{{ __('Departure') }}</span>
                     <p class="font-medium">{{ $flight->departure_time->format('Y-m-d H:i') }}</p>
@@ -100,8 +100,8 @@ new #[Layout('layouts.app')] class extends Component
         </div>
 
         @if (! $success_message)
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('Book a Seat') }}</h3>
+            <div class="p-4 sm:p-8 bg-white shadow-sm rounded-2xl border border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Book a Seat') }}</h3>
 
                 @if ($this->availableSeats()->isEmpty())
                     <p class="text-sm text-red-600">{{ __('No seats available on this flight.') }}</p>
@@ -109,7 +109,7 @@ new #[Layout('layouts.app')] class extends Component
                     <form wire:submit="book" class="space-y-6">
                         <div>
                             <x-input-label for="selected_seat_id" :value="__('Select Seat')" />
-                            <select wire:model="selected_seat_id" id="selected_seat_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                            <select wire:model="selected_seat_id" id="selected_seat_id" class="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                                 <option value="">{{ __('-- Choose a seat --') }}</option>
                                 @foreach ($this->availableSeats() as $seat)
                                     <option value="{{ $seat->id }}">{{ $seat->seat_number }}</option>
@@ -124,9 +124,9 @@ new #[Layout('layouts.app')] class extends Component
                             <x-input-error class="mt-2" :messages="$errors->get('overweight')" />
                         </div>
 
-                        <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="p-4 bg-emerald-50 rounded-lg">
                             <span class="text-sm text-gray-600">{{ __('Total Cost') }}</span>
-                            <p class="text-2xl font-semibold text-gray-900">${{ number_format($this->totalCost) }}</p>
+                            <p class="text-2xl font-bold text-emerald-700">${{ number_format($this->totalCost) }}</p>
                         </div>
 
                         <x-primary-button>
@@ -137,8 +137,8 @@ new #[Layout('layouts.app')] class extends Component
             </div>
         @endif
 
-        <a href="{{ route('flights.index') }}" wire:navigate class="text-sm text-indigo-600 hover:text-indigo-900">
+        <x-link-secondary :href="route('flights.index')" wire:navigate>
             {{ __('← Back to flights') }}
-        </a>
+        </x-link-secondary>
     </div>
 </div>

@@ -32,9 +32,9 @@ new #[Layout('layouts.app')] class extends Component
 }; ?>
 
 <div>
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <h2 class="text-lg font-medium text-gray-900 mb-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div class="p-4 sm:p-8 bg-white shadow-sm rounded-2xl border border-gray-100">
+            <h2 class="text-lg font-semibold text-gray-900 mb-6">
                 {{ __('Available Flights') }}
             </h2>
 
@@ -66,7 +66,7 @@ new #[Layout('layouts.app')] class extends Component
             @if ($this->flights()->isEmpty())
                 <p class="text-sm text-gray-600">{{ __('No flights found matching your criteria.') }}</p>
             @else
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto -mx-4 sm:mx-0">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr class="text-left text-xs font-medium text-gray-500 uppercase">
@@ -81,21 +81,21 @@ new #[Layout('layouts.app')] class extends Component
                         <tbody class="divide-y divide-gray-100">
                             @foreach ($this->flights() as $flight)
                                 <tr class="text-sm text-gray-800">
-                                    <td class="px-4 py-3 font-medium">{{ $flight->flight_number }}</td>
-                                    <td class="px-4 py-3">{{ $flight->departure_city }} → {{ $flight->destination_city }}</td>
-                                    <td class="px-4 py-3">{{ $flight->departure_time->format('Y-m-d H:i') }}</td>
-                                    <td class="px-4 py-3">${{ number_format($flight->price) }}</td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-4 py-3 font-medium whitespace-nowrap">{{ $flight->flight_number }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">{{ $flight->departure_city }} → {{ $flight->destination_city }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">{{ $flight->departure_time->format('Y-m-d H:i') }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">${{ number_format($flight->price) }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
                                         @if ($flight->available_seats_count > 0)
-                                            <span class="text-green-700">{{ $flight->available_seats_count }} {{ __('seats') }}</span>
+                                            <span class="text-emerald-700 font-medium">{{ $flight->available_seats_count }} {{ __('seats') }}</span>
                                         @else
-                                            <span class="text-red-700">{{ __('Full') }}</span>
+                                            <span class="text-red-600 font-medium">{{ __('Full') }}</span>
                                         @endif
                                     </td>
-                                    <td class="px-4 py-3">
-                                        <a href="{{ route('flights.show', $flight) }}" wire:navigate class="text-indigo-600 hover:text-indigo-900 font-medium">
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <x-link-button :href="route('flights.show', $flight)" wire:navigate class="!px-4 !py-2 !text-xs">
                                             {{ __('View & Book') }}
-                                        </a>
+                                        </x-link-button>
                                     </td>
                                 </tr>
                             @endforeach

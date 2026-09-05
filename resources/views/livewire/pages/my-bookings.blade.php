@@ -17,16 +17,21 @@ new #[Layout('layouts.app')] class extends Component
 }; ?>
 
 <div>
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <h2 class="text-lg font-medium text-gray-900 mb-6">
-                {{ __('My Bookings') }}
-            </h2>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div class="p-4 sm:p-8 bg-white shadow-sm rounded-2xl border border-gray-100">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-lg font-semibold text-gray-900">
+                    {{ __('My Bookings') }}
+                </h2>
+                <x-link-button :href="route('flights.index')" wire:navigate class="!px-4 !py-2 !text-xs">
+                    {{ __('Book New Flight') }}
+                </x-link-button>
+            </div>
 
             @if ($this->bookings()->isEmpty())
                 <p class="text-sm text-gray-600">{{ __('You have no bookings yet.') }}</p>
             @else
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto -mx-4 sm:mx-0">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr class="text-left text-xs font-medium text-gray-500 uppercase">
@@ -43,26 +48,26 @@ new #[Layout('layouts.app')] class extends Component
                         <tbody class="divide-y divide-gray-100">
                             @foreach ($this->bookings() as $booking)
                                 <tr class="text-sm text-gray-800">
-                                    <td class="px-4 py-3 font-medium">{{ $booking->booking_reference }}</td>
-                                    <td class="px-4 py-3">{{ $booking->flight->flight_number }}</td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-4 py-3 font-medium whitespace-nowrap">{{ $booking->booking_reference }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">{{ $booking->flight->flight_number }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
                                         {{ $booking->flight->departure_city }} → {{ $booking->flight->destination_city }}
                                     </td>
-                                    <td class="px-4 py-3">{{ $booking->seat->seat_number }}</td>
-                                    <td class="px-4 py-3">{{ $booking->flight->departure_time->format('Y-m-d H:i') }}</td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-4 py-3 whitespace-nowrap">{{ $booking->seat->seat_number }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">{{ $booking->flight->departure_time->format('Y-m-d H:i') }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
                                         <span @class([
                                             'px-2 py-1 rounded-full text-xs font-medium',
                                             'bg-blue-100 text-blue-700' => $booking->flight->status === 'upcoming',
                                             'bg-yellow-100 text-yellow-700' => $booking->flight->status === 'departed',
-                                            'bg-green-100 text-green-700' => $booking->flight->status === 'arrived',
+                                            'bg-emerald-100 text-emerald-700' => $booking->flight->status === 'arrived',
                                             'bg-red-100 text-red-700' => $booking->flight->status === 'cancelled',
                                         ])>
                                             {{ ucfirst($booking->flight->status) }}
                                         </span>
                                     </td>
-                                    <td class="px-4 py-3">${{ number_format($booking->total_cost) }}</td>
-                                    <td class="px-4 py-3">{{ $booking->booking_date->format('Y-m-d') }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">${{ number_format($booking->total_cost) }}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">{{ $booking->booking_date->format('Y-m-d') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

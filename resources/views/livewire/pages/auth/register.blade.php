@@ -45,76 +45,70 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
-    <form wire:submit="register">
-        <!-- Passport Number -->
+    <h2 class="text-xl font-bold text-gray-900 mb-1">Create your account</h2>
+    <p class="text-sm text-gray-500 mb-6">Join ATC and start booking flights today.</p>
+
+    <form wire:submit="register" class="space-y-5">
         <div>
             <x-input-label for="passport_number" :value="__('Passport Number')" />
             <x-text-input wire:model="passport_number" id="passport_number" class="block mt-1 w-full" type="text" name="passport_number" required />
             <x-input-error :messages="$errors->get('passport_number')" class="mt-2" />
         </div>
 
-        <!-- First Name -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="first_name" :value="__('First Name')" />
             <x-text-input wire:model="first_name" id="first_name" class="block mt-1 w-full" type="text" name="first_name" required autofocus />
             <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
         </div>
 
-        <!-- Father Name -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="father_name" :value="__('Father Name')" />
             <x-text-input wire:model="father_name" id="father_name" class="block mt-1 w-full" type="text" name="father_name" required />
             <x-input-error :messages="$errors->get('father_name')" class="mt-2" />
         </div>
 
-        <!-- Last Name -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="last_name" :value="__('Last Name')" />
             <x-text-input wire:model="last_name" id="last_name" class="block mt-1 w-full" type="text" name="last_name" required />
             <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
         </div>
 
-        <!-- Email -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Phone -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="phone" :value="__('Phone')" />
             <x-text-input wire:model="phone" id="phone" class="block mt-1 w-full" type="text" name="phone" />
             <x-input-error :messages="$errors->get('phone')" class="mt-2" />
         </div>
 
-        <!-- Date of Birth -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="dob" :value="__('Date of Birth')" />
             <x-text-input wire:model="dob" id="dob" class="block mt-1 w-full" type="date" name="dob" />
             <x-input-error :messages="$errors->get('dob')" class="mt-2" />
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="password" :value="__('Password')" />
             <x-text-input wire:model="password" id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
             <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md" href="{{ route('login') }}" wire:navigate>
+        <div class="flex items-center justify-between pt-2">
+            <a class="text-sm text-gray-600 hover:text-emerald-600 underline" href="{{ route('login') }}" wire:navigate>
                 {{ __('Already registered?') }}
             </a>
 
-            <x-primary-button class="ms-4">
+            <x-primary-button>
                 {{ __('Register') }}
             </x-primary-button>
         </div>
