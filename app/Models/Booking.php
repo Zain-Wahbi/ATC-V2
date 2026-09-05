@@ -30,20 +30,26 @@ class Booking extends Model
     }
 
     protected static function boot()
-    {
-        parent::boot();
+{
+    parent::boot();
 
-        static::creating(function (Booking $booking) {
-            if (empty($booking->booking_reference)) {
-                $booking->booking_reference = 'ATC-' . str_pad(
-                    (string) (static::max('id') + 1),
-                    6,
-                    '0',
-                    STR_PAD_LEFT
-                );
-            }
-        });
-    }
+    static::creating(function (Booking $booking) {
+        if (empty($booking->booking_reference)) {
+            $booking->booking_reference = 'ATC-' . str_pad(
+                (string) (static::max('id') + 1),
+                6,
+                '0',
+                STR_PAD_LEFT
+            );
+        }
+    });
+
+    static::created(function (Booking $booking) {
+        $pointsEarned = intdiv($booking->total_cost, 10);
+
+        $booking->customer->increment('loyalty_points', $pointsEarned);
+    });
+}
 
     public function customer(): BelongsTo
     {

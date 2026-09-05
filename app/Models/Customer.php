@@ -18,6 +18,7 @@ class Customer extends Authenticatable
         'last_name',
         'email',
         'phone',
+        'loyalty_points',
         'dob',
         'password',
     ];
