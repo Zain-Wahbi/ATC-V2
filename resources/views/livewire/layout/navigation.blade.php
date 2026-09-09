@@ -69,6 +69,17 @@ new class extends Component
                             {{ __('My Bookings') }}
                         </x-dropdown-link>
 
+                        <div class="border-t border-gray-100 my-1"></div>
+
+                        <a href="{{ route('language.switch', 'en') }}" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100">
+                            🇬🇧 English
+                        </a>
+                        <a href="{{ route('language.switch', 'ar') }}" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100">
+                            🇸🇾 العربية
+                        </a>
+
+                        <div class="border-t border-gray-100 my-1"></div>
+
                         <!-- Authentication -->
                         <button wire:click="logout" class="w-full text-start">
                             <x-dropdown-link>
@@ -122,6 +133,17 @@ new class extends Component
                 <x-responsive-nav-link :href="route('my-bookings')" wire:navigate>
                     {{ __('My Bookings') }}
                 </x-responsive-nav-link>
+
+                <div class="border-t border-gray-200 my-2"></div>
+
+                <a href="{{ route('language.switch', 'en') }}" class="block w-full ps-3 pe-4 py-2 text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50">
+                    🇬🇧 English
+                </a>
+                <a href="{{ route('language.switch', 'ar') }}" class="block w-full ps-3 pe-4 py-2 text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50">
+                    🇸🇾 العربية
+                </a>
+
+                <div class="border-t border-gray-200 my-2"></div>
 
                 <!-- Authentication -->
                 <button wire:click="logout" class="w-full text-start">

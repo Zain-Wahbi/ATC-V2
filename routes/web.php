@@ -25,4 +25,11 @@ Volt::route('flights/{flight}', 'pages.flights.show')
     ->middleware(['auth:customer'])
     ->name('flights.show');
 
+Route::get('language/{locale}', function (string $locale) {
+    if (in_array($locale, ['en', 'ar'])) {
+        session(['locale' => $locale]);
+    }
+    return back();
+})->name('language.switch');
+
 require __DIR__.'/auth.php';
