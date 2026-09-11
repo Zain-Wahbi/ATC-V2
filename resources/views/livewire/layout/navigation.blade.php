@@ -30,23 +30,37 @@ new class extends Component
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
+                    <div class="hidden space-x-8 rtl:space-x-reverse sm:-my-px sm:ms-10 sm:flex">                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
+                        {{ __('app.nav_dashboard') }}
                     </x-nav-link>
 
                     <x-nav-link :href="route('flights.index')" :active="request()->routeIs('flights.*')" wire:navigate>
-                        {{ __('Flights') }}
+                        {{ __('app.nav_flights') }}
                     </x-nav-link>
 
                     <x-nav-link :href="route('my-bookings')" :active="request()->routeIs('my-bookings')" wire:navigate>
-                        {{ __('My Bookings') }}
+                        {{ __('app.nav_bookings') }}
                     </x-nav-link>
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
+                <!-- Language Switcher -->
+                <div class="flex items-center gap-1" dir="ltr">
+                    <a href="{{ route('language.switch', 'en') }}"
+                       class="px-2 py-1 text-xs font-bold rounded transition
+                              {{ app()->getLocale() === 'en' ? 'bg-emerald-600 text-white' : 'text-gray-500 hover:text-emerald-600' }}">
+                        EN
+                    </a>
+                    <span class="text-gray-300">|</span>
+                    <a href="{{ route('language.switch', 'ar') }}"
+                       class="px-2 py-1 text-xs font-bold rounded transition
+                              {{ app()->getLocale() === 'ar' ? 'bg-emerald-600 text-white' : 'text-gray-500 hover:text-emerald-600' }}">
+                        AR
+                    </a>
+                </div>
+
+                <!-- Settings Dropdown -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -62,28 +76,19 @@ new class extends Component
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile')" wire:navigate>
-                            {{ __('Profile') }}
+                            {{ __('app.nav_profile') }}
                         </x-dropdown-link>
 
                         <x-dropdown-link :href="route('my-bookings')" wire:navigate>
-                            {{ __('My Bookings') }}
+                            {{ __('app.nav_bookings') }}
                         </x-dropdown-link>
-
-                        <div class="border-t border-gray-100 my-1"></div>
-
-                        <a href="{{ route('language.switch', 'en') }}" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100">
-                            🇬🇧 English
-                        </a>
-                        <a href="{{ route('language.switch', 'ar') }}" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100">
-                            🇸🇾 العربية
-                        </a>
 
                         <div class="border-t border-gray-100 my-1"></div>
 
                         <!-- Authentication -->
                         <button wire:click="logout" class="w-full text-start">
                             <x-dropdown-link>
-                                {{ __('Log Out') }}
+                                {{ __('app.nav_logout') }}
                             </x-dropdown-link>
                         </button>
                     </x-slot>
@@ -106,15 +111,15 @@ new class extends Component
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Dashboard') }}
+                {{ __('app.nav_dashboard') }}
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('flights.index')" :active="request()->routeIs('flights.*')" wire:navigate>
-                {{ __('Flights') }}
+                {{ __('app.nav_flights') }}
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('my-bookings')" :active="request()->routeIs('my-bookings')" wire:navigate>
-                {{ __('My Bookings') }}
+                {{ __('app.nav_bookings') }}
             </x-responsive-nav-link>
         </div>
 
@@ -127,28 +132,35 @@ new class extends Component
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile')" wire:navigate>
-                    {{ __('Profile') }}
+                    {{ __('app.nav_profile') }}
                 </x-responsive-nav-link>
 
                 <x-responsive-nav-link :href="route('my-bookings')" wire:navigate>
-                    {{ __('My Bookings') }}
+                    {{ __('app.nav_bookings') }}
                 </x-responsive-nav-link>
 
                 <div class="border-t border-gray-200 my-2"></div>
 
-                <a href="{{ route('language.switch', 'en') }}" class="block w-full ps-3 pe-4 py-2 text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50">
-                    🇬🇧 English
-                </a>
-                <a href="{{ route('language.switch', 'ar') }}" class="block w-full ps-3 pe-4 py-2 text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50">
-                    🇸🇾 العربية
-                </a>
+                <!-- Language Switcher -->
+                <div class="flex items-center gap-2 px-4 py-2" dir="ltr">
+                    <a href="{{ route('language.switch', 'en') }}"
+                       class="px-3 py-1 text-sm font-bold rounded transition
+                              {{ app()->getLocale() === 'en' ? 'bg-emerald-600 text-white' : 'text-gray-500 hover:text-emerald-600' }}">
+                        EN
+                    </a>
+                    <a href="{{ route('language.switch', 'ar') }}"
+                       class="px-3 py-1 text-sm font-bold rounded transition
+                              {{ app()->getLocale() === 'ar' ? 'bg-emerald-600 text-white' : 'text-gray-500 hover:text-emerald-600' }}">
+                        AR
+                    </a>
+                </div>
 
                 <div class="border-t border-gray-200 my-2"></div>
 
                 <!-- Authentication -->
                 <button wire:click="logout" class="w-full text-start">
                     <x-responsive-nav-link>
-                        {{ __('Log Out') }}
+                        {{ __('app.nav_logout') }}
                     </x-responsive-nav-link>
                 </button>
             </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,7 +13,22 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-br from-gray-800 via-gray-900 to-emerald-900">
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-br from-gray-800 via-gray-900 to-emerald-900 relative">
+
+        <div class="absolute top-4 end-4 flex items-center gap-1" dir="ltr">
+            <a href="{{ route('language.switch', 'en') }}"
+               class="px-2 py-1 text-xs font-bold rounded transition
+                      {{ app()->getLocale() === 'en' ? 'bg-emerald-500 text-white' : 'text-gray-300 hover:text-white' }}">
+                EN
+            </a>
+            <span class="text-gray-500">|</span>
+            <a href="{{ route('language.switch', 'ar') }}"
+               class="px-2 py-1 text-xs font-bold rounded transition
+                      {{ app()->getLocale() === 'ar' ? 'bg-emerald-500 text-white' : 'text-gray-300 hover:text-white' }}">
+                AR
+            </a>
+        </div>
+
         <div class="mb-6">
             <a href="/" wire:navigate class="flex items-center gap-2">
                 <svg class="w-10 h-10 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
