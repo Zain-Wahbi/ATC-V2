@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,13 +25,28 @@
             </a>
 
             <div class="flex items-center gap-4">
+                <!-- Language Switcher -->
+                <div class="flex items-center gap-1" dir="ltr">
+                    <a href="{{ route('language.switch', 'en') }}"
+                       class="px-2 py-1 text-xs font-bold rounded transition
+                              {{ app()->getLocale() === 'en' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-emerald-400' }}">
+                        EN
+                    </a>
+                    <span class="text-gray-600">|</span>
+                    <a href="{{ route('language.switch', 'ar') }}"
+                       class="px-2 py-1 text-xs font-bold rounded transition
+                              {{ app()->getLocale() === 'ar' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-emerald-400' }}">
+                        AR
+                    </a>
+                </div>
+
                 @if (Route::has('login'))
                     @auth('customer')
-                        <a href="{{ route('dashboard') }}" wire:navigate class="text-sm font-medium hover:text-emerald-400">Dashboard</a>
+                        <a href="{{ route('dashboard') }}" wire:navigate class="text-sm font-medium hover:text-emerald-400">{{ __('app.nav_dashboard') }}</a>
                     @else
-                        <a href="{{ route('login') }}" wire:navigate class="text-sm font-medium hover:text-emerald-400">Log in</a>
+                        <a href="{{ route('login') }}" wire:navigate class="text-sm font-medium hover:text-emerald-400">{{ __('app.log_in') }}</a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" wire:navigate class="text-sm font-medium bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-lg">Register</a>
+                            <a href="{{ route('register') }}" wire:navigate class="text-sm font-medium bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-lg">{{ __('app.register') }}</a>
                         @endif
                     @endauth
                 @endif
@@ -43,22 +58,22 @@
     <div class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-emerald-900 text-white overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 text-center">
             <h1 class="text-4xl sm:text-6xl font-bold tracking-tight">
-                Fly Further with <span class="text-emerald-400">ATC</span>
+                {!! str_replace(':app', '<span class="text-emerald-400">ATC</span>', __('app.welcome_title')) !!}
             </h1>
             <p class="mt-6 text-lg text-gray-300 max-w-2xl mx-auto">
-                Browse flights, book your seat, and manage your trips — all in one place.
+                {{ __('app.welcome_subtitle') }}
             </p>
             <div class="mt-10 flex justify-center gap-4">
                 @auth('customer')
                     <a href="{{ route('flights.index') }}" wire:navigate class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-8 py-3 rounded-lg shadow-lg transition">
-                        Browse Flights
+                        {{ __('app.browse_flights') }}
                     </a>
                 @else
                     <a href="{{ route('register') }}" wire:navigate class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-8 py-3 rounded-lg shadow-lg transition">
-                        Get Started
+                        {{ __('app.get_started') }}
                     </a>
                     <a href="{{ route('login') }}" wire:navigate class="border border-gray-400 hover:border-white text-white font-semibold px-8 py-3 rounded-lg transition">
-                        Log In
+                        {{ __('app.log_in') }}
                     </a>
                 @endauth
             </div>
@@ -72,31 +87,31 @@
                 <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </div>
-                <h3 class="font-semibold text-lg text-gray-900">Search Flights</h3>
-                <p class="mt-2 text-sm text-gray-600">Find the perfect flight by route, date, and price.</p>
+                <h3 class="font-semibold text-lg text-gray-900">{{ __('app.feature_search_title') }}</h3>
+                <p class="mt-2 text-sm text-gray-600">{{ __('app.feature_search_desc') }}</p>
             </div>
 
             <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
                 <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
-                <h3 class="font-semibold text-lg text-gray-900">Book Instantly</h3>
-                <p class="mt-2 text-sm text-gray-600">Choose your seat and confirm your booking in seconds.</p>
+                <h3 class="font-semibold text-lg text-gray-900">{{ __('app.feature_book_title') }}</h3>
+                <p class="mt-2 text-sm text-gray-600">{{ __('app.feature_book_desc') }}</p>
             </div>
 
             <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
                 <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                 </div>
-                <h3 class="font-semibold text-lg text-gray-900">Manage Bookings</h3>
-                <p class="mt-2 text-sm text-gray-600">View and track all your trips from your dashboard.</p>
+                <h3 class="font-semibold text-lg text-gray-900">{{ __('app.feature_manage_title') }}</h3>
+                <p class="mt-2 text-sm text-gray-600">{{ __('app.feature_manage_desc') }}</p>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-gray-400 text-center py-6 text-sm">
-        &copy; {{ date('Y') }} ATC — Airline Travel Company. All rights reserved.
+        &copy; {{ date('Y') }} {{ __('app.footer_text') }}
     </footer>
 
 </body>

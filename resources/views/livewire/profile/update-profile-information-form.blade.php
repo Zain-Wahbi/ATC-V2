@@ -51,61 +51,61 @@ new class extends Component
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
+            {{ __('app.profile_info_title') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __('app.profile_info_desc') }}
         </p>
     </header>
 
     <form wire:submit="updateProfileInformation" class="mt-6 space-y-6">
         <div>
-            <x-input-label for="passport_number" :value="__('Passport Number')" />
+            <x-input-label for="passport_number" :value="__('app.passport_number')" />
             <x-text-input id="passport_number" type="text" class="mt-1 block w-full bg-gray-100" value="{{ $passport_number }}" disabled readonly />
         </div>
 
         <div>
-            <x-input-label for="first_name" :value="__('First Name')" />
+            <x-input-label for="first_name" :value="__('app.first_name')" />
             <x-text-input wire:model="first_name" id="first_name" name="first_name" type="text" class="mt-1 block w-full" required autofocus />
             <x-input-error class="mt-2" :messages="$errors->get('first_name')" />
         </div>
 
         <div>
-            <x-input-label for="father_name" :value="__('Father Name')" />
+            <x-input-label for="father_name" :value="__('app.father_name')" />
             <x-text-input wire:model="father_name" id="father_name" name="father_name" type="text" class="mt-1 block w-full" required />
             <x-input-error class="mt-2" :messages="$errors->get('father_name')" />
         </div>
 
         <div>
-            <x-input-label for="last_name" :value="__('Last Name')" />
+            <x-input-label for="last_name" :value="__('app.last_name')" />
             <x-text-input wire:model="last_name" id="last_name" name="last_name" type="text" class="mt-1 block w-full" required />
             <x-input-error class="mt-2" :messages="$errors->get('last_name')" />
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('app.email')" />
             <x-text-input wire:model="email" id="email" name="email" type="email" class="mt-1 block w-full" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
         </div>
 
         <div>
-            <x-input-label for="phone" :value="__('Phone')" />
+            <x-input-label for="phone" :value="__('app.phone')" />
             <x-text-input wire:model="phone" id="phone" name="phone" type="text" class="mt-1 block w-full" />
             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
         </div>
 
         <div>
-            <x-input-label for="dob" :value="__('Date of Birth')" />
+            <x-input-label for="dob" :value="__('app.date_of_birth')" />
             <x-text-input wire:model="dob" id="dob" name="dob" type="date" class="mt-1 block w-full" />
             <x-input-error class="mt-2" :messages="$errors->get('dob')" />
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <x-primary-button>{{ __('app.save') }}</x-primary-button>
 
             <x-action-message class="me-3" on="profile-updated">
-                {{ __('Saved.') }}
+                {{ __('app.saved') }}
             </x-action-message>
         </div>
     </form>
