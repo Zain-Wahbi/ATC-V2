@@ -17,7 +17,7 @@ class Booking extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['booking_reference', 'customer_id', 'flight_id', 'seat_id', 'total_cost', 'overweight', 'booking_date'])
+            ->logOnly(['booking_reference', 'customer_id', 'flight_id', 'seat_id', 'total_cost', 'overweight', 'booking_date', 'cancelled_at'])
             ->logOnlyDirty()
             ->useLogName('booking');
     }
@@ -30,12 +30,14 @@ class Booking extends Model
         'total_cost',
         'overweight',
         'booking_date',
+        'cancelled_at',
     ];
 
     protected function casts(): array
     {
         return [
             'booking_date' => 'datetime',
+            'cancelled_at' => 'datetime',
         ];
     }
 
@@ -60,6 +62,16 @@ class Booking extends Model
         $booking->customer->increment('loyalty_points', $pointsEarned);
     });
 }
+
+    public function isCancelled(): bool
+    {
+        return $this->cancelled_at !== null;
+    }
+
+    public function isCancellable(): bool
+    {
+        return ! $this->isCancelled() && $this->flight->status === 'upcoming';
+    }
 
     public function customer(): BelongsTo
     {

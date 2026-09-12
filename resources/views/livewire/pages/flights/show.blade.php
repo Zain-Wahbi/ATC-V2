@@ -13,6 +13,7 @@ new #[Layout('layouts.app')] class extends Component
     public ?int $selected_seat_id = null;
     public int $overweight = 0;
     public ?string $success_message = null;
+    public ?int $last_booking_id = null;
 
     public function mount(Flight $flight): void
     {
@@ -57,6 +58,7 @@ new #[Layout('layouts.app')] class extends Component
         $seat->update(['is_booked' => true]);
 
         $this->success_message = __('app.booking_confirmed', ['ref' => $booking->booking_reference]);
+        $this->last_booking_id = $booking->id;
         $this->selected_seat_id = null;
         $this->overweight = 0;
     }
@@ -66,10 +68,10 @@ new #[Layout('layouts.app')] class extends Component
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
         @if ($success_message)
-            <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-lg">
-                {{ $success_message }}
-                <a href="{{ route('my-bookings') }}" wire:navigate class="underline font-medium ms-2">
-                    {{ __('app.view_my_bookings') }}
+            <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-lg flex items-center justify-between flex-wrap gap-3">
+                <span>{{ $success_message }}</span>
+                <a href="{{ route('bookings.show', $last_booking_id) }}" wire:navigate class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg">
+                    {{ __('app.view_ticket') }}
                 </a>
             </div>
         @endif
