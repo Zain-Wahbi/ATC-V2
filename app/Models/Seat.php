@@ -13,6 +13,17 @@ class Seat extends Model
 {
     use HasFactory, LogsActivity;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updated(function (Seat $seat) {
+            if ($seat->wasChanged('is_booked')) {
+                event(new \App\Events\SeatStatusUpdated($seat));
+            }
+        });
+    }
+
     protected $fillable = [
         'flight_id',
         'seat_number',
