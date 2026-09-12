@@ -5,6 +5,7 @@ use App\Models\Flight;
 use App\Models\Seat;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Volt\Component;
 
 new #[Layout('layouts.app')] class extends Component
@@ -17,6 +18,12 @@ new #[Layout('layouts.app')] class extends Component
     public function mount(Flight $flight): void
     {
         $this->flight = $flight;
+    }
+
+    #[On('echo:flight.{flight.id},seat.updated')]
+    public function refreshSeats(): void
+    {
+        //
     }
 
     public function availableSeats()
