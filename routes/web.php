@@ -25,11 +25,22 @@ Volt::route('flights/{flight}', 'pages.flights.show')
     ->middleware(['auth:customer'])
     ->name('flights.show');
 
+Volt::route('bookings/{booking}', 'pages.bookings.show')
+    ->middleware(['auth:customer'])
+    ->name('bookings.show');
+
+Volt::route('ticket/{reference}', 'pages.ticket-verify')
+    ->name('ticket.verify');
+
 Route::get('language/{locale}', function (string $locale) {
     if (in_array($locale, ['en', 'ar'])) {
         session(['locale' => $locale]);
     }
     return back();
 })->name('language.switch');
+
+Route::fallback(function () {
+    abort(404);
+});
 
 require __DIR__.'/auth.php';
