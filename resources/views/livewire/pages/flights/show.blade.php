@@ -21,10 +21,10 @@ new #[Layout('layouts.app')] class extends Component
         $this->flight = $flight;
     }
 
-    #[On('echo:flight.{flight.id},seat.updated')]
+    #[On('echo:flight.{flight.id},.seat.updated')]
     public function refreshSeats(): void
     {
-        //
+        $this->flight->refresh();
     }
 
     public function availableSeats()

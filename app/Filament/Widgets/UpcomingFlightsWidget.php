@@ -40,7 +40,8 @@ class UpcomingFlightsWidget extends BaseWidget
                 Tables\Columns\TextColumn::make('seats_count')
                     ->label('Seats'),
 
-                Tables\Columns\TextColumn::make('status')
+                Tables\Columns\TextColumn::make('computed_status')
+                    ->label('Status')
                     ->badge()
                     ->color('info'),
             ])

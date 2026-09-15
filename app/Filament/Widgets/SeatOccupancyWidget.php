@@ -18,18 +18,28 @@ class SeatOccupancyWidget extends BaseWidget
             ? round(($bookedSeats / $totalSeats) * 100, 1)
             : 0;
 
+        $occupancyColor = $occupancyRate > 70 ? 'danger' : ($occupancyRate > 40 ? 'warning' : 'success');
+
         return [
-            Stat::make('Total Seats', $totalSeats)
-                ->color('info'),
+            Stat::make('Occupancy Rate', $occupancyRate . '%')
+                ->description('Overall seat utilization across all flights')
+                ->descriptionIcon('heroicon-m-chart-bar')
+                ->color($occupancyColor),
 
-            Stat::make('Booked Seats', $bookedSeats)
-                ->color('danger'),
-
-            Stat::make('Available Seats', $availableSeats)
+            Stat::make('Available Seats', number_format($availableSeats))
+                ->description('Ready to be sold')
+                ->descriptionIcon('heroicon-m-check-circle')
                 ->color('success'),
 
-            Stat::make('Occupancy Rate', $occupancyRate . '%')
-                ->color($occupancyRate > 70 ? 'danger' : ($occupancyRate > 40 ? 'warning' : 'success')),
+            Stat::make('Booked Seats', number_format($bookedSeats))
+                ->description('Currently reserved')
+                ->descriptionIcon('heroicon-m-lock-closed')
+                ->color('warning'),
+
+            Stat::make('Total Seats', number_format($totalSeats))
+                ->description('Capacity across all flights')
+                ->descriptionIcon('heroicon-m-squares-2x2')
+                ->color('gray'),
         ];
     }
 }

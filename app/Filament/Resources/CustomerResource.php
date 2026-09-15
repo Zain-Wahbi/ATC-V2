@@ -17,6 +17,15 @@ class CustomerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    protected static ?string $navigationGroup = 'Customers';
+
+    protected static ?int $navigationSort = 1;
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['first_name', 'father_name', 'last_name', 'email', 'passport_number'];
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -77,16 +86,46 @@ class CustomerResource extends Resource
 
                 Tables\Columns\TextColumn::make('phone'),
 
-                Tables\Columns\TextColumn::make('dob')
+                               Tables\Columns\TextColumn::make('dob')
                     ->date()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('loyalty_points')
+                    ->label('Loyalty Points')
+                    ->badge()
+                    ->color('warning')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('bookings_count')
+                    ->label('Bookings')
+                    ->counts('bookings')
+                    ->badge()
+                    ->color('info')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Joined')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([])
+            ->filters([
+                Tables\Filters\Filter::make('has_bookings')
+                    ->label('Has Bookings')
+                    ->query(fn ($query) => $query->has('bookings')),
+
+                Tables\Filters\Filter::make('dob')
+                    ->form([
+                        Forms\Components\DatePicker::make('born_from'),
+                        Forms\Components\DatePicker::make('born_until'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['born_from'], fn ($q, $date) => $q->whereDate('dob', '>=', $date))
+                            ->when($data['born_until'], fn ($q, $date) => $q->whereDate('dob', '<=', $date));
+                    }),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
@@ -100,6 +139,12 @@ class CustomerResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            \App\Filament\Resources\CustomerResource\RelationManagers\BookingsRelationManager::class,
+        ];
+    }
     public static function getPages(): array
     {
         return [
