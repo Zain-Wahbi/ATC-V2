@@ -6,6 +6,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'ATC') }} — Airline Travel Company</title>
+    <meta name="description" content="A full-stack airline booking platform built with Laravel, Filament, and real-time WebSockets — browse flights, book seats, and manage trips.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:title" content="ATC — Airline Travel Company">
+    <meta property="og:description" content="A full-stack airline booking platform built with Laravel, Filament, and real-time WebSockets.">
+    <meta property="og:image" content="{{ asset('og-image.png') }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ATC — Airline Travel Company">
+    <meta name="twitter:description" content="A full-stack airline booking platform built with Laravel, Filament, and real-time WebSockets.">
+    <meta name="twitter:image" content="{{ asset('og-image.png') }}">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="alternate icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">

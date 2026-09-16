@@ -134,4 +134,6 @@ return [
     'scan_to_verify' => 'Scan to verify this ticket',
     'ticket_not_found' => 'Ticket not found. Please check the reference number.',
     'valid_ticket' => 'Valid Ticket',
+    'error_419_title' => 'Session Expired',
+    'error_419_message' => 'Your session took too long and expired for security reasons. Please go back and try again.',
 ];
