@@ -23,6 +23,11 @@ class SeatResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['seat_number'];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -53,6 +58,7 @@ class SeatResource extends Resource
                     ]),
             ]);
     }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -78,7 +84,7 @@ class SeatResource extends Resource
                 Tables\Filters\SelectFilter::make('flight_id')
                     ->relationship('flight', 'flight_number')
                     ->label('Flight'),
-            
+
                 Tables\Filters\TernaryFilter::make('is_booked')
                     ->label('Booking Status')
                     ->boolean()

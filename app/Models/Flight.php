@@ -53,4 +53,23 @@ class Flight extends Model
     {
         return $this->seats()->where('is_booked', false);
     }
+
+    public function getComputedStatusAttribute(): string
+    {
+        if ($this->status === 'cancelled') {
+            return 'cancelled';
+        }
+
+        $arrivalTime = $this->departure_time->addMinutes($this->trip_duration_minutes);
+
+        if (now()->lt($this->departure_time)) {
+            return 'upcoming';
+        }
+
+        if (now()->lt($arrivalTime)) {
+            return 'departed';
+        }
+
+        return 'arrived';
+    }
 }

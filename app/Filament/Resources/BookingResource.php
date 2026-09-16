@@ -20,8 +20,14 @@ class BookingResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
     protected static ?string $navigationGroup = 'Flight Operations';
-    
+
     protected static ?int $navigationSort = 3;
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['booking_reference'];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -159,7 +165,7 @@ class BookingResource extends Resource
                 Tables\Filters\SelectFilter::make('flight_id')
                     ->relationship('flight', 'flight_number')
                     ->label('Flight'),
-            
+
                 Tables\Filters\Filter::make('booking_date')
                     ->form([
                         Forms\Components\DatePicker::make('from'),

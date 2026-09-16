@@ -23,6 +23,11 @@ class FlightResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['flight_number', 'departure_city', 'destination_city'];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -94,11 +99,11 @@ class FlightResource extends Resource
             ]);
     }
 
-public static function table(Table $table): Table
-{
-    return $table
-        ->defaultSort('departure_time', 'asc')
-        ->columns([
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->defaultSort('departure_time', 'asc')
+            ->columns([
                 Tables\Columns\TextColumn::make('flight_number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('departure_city')
@@ -114,7 +119,8 @@ public static function table(Table $table): Table
                 Tables\Columns\TextColumn::make('seats_count')
                     ->numeric()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('status')
+                Tables\Columns\TextColumn::make('computed_status')
+                    ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'upcoming' => 'info',
@@ -137,7 +143,7 @@ public static function table(Table $table): Table
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-                        ->filters([
+            ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'upcoming' => 'Upcoming',

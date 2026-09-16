@@ -6,6 +6,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -29,19 +30,28 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('ATC Admin')
             ->login()
             ->authGuard('web')
+            ->darkMode()
             ->colors([
                 'primary' => Color::Emerald,
                 'gray' => Color::Slate,
+            ])
+            ->navigationGroups([
+                NavigationGroup::make('Flight Operations')
+                    ->collapsed(false),
+                NavigationGroup::make('Customers')
+                    ->collapsed(false),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\SeatOccupancyWidget::class,
+                \App\Filament\Widgets\RevenueOverviewWidget::class,
+                \App\Filament\Widgets\UpcomingFlightsWidget::class,
+                \App\Filament\Widgets\RecentBookingsWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
