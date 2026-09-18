@@ -37,11 +37,32 @@
 | **Customer login** | `demo@atc.com` / `password` |
 | **Admin panel** | `/admin` — credentials on request |
 
-<!-- Replace with real screenshots before publishing. Suggested set: landing page, flight booking (AR + RTL), boarding pass/QR ticket, admin dashboard, admin dark mode. -->
-<p align="center">
-  <img src="docs/screenshot-landing.png" width="49%">
-  <img src="docs/screenshot-admin-dashboard.png" width="49%">
-</p>
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshot-landing.png" alt="Landing page"></td>
+    <td width="50%"><img src="docs/screenshot-landing-ar.png" alt="Landing page in Arabic (RTL)"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Landing page</sub></td>
+    <td align="center"><sub>Full RTL support with Arabic localization</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshot-booking.png" alt="Flight booking page"></td>
+    <td width="50%"><img src="docs/screenshot-ticket.png" alt="Digital boarding pass with QR code"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Live seat selection with real-time availability</sub></td>
+    <td align="center"><sub>Digital boarding pass with QR verification</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshot-admin-dashboard.png" alt="Admin dashboard"></td>
+    <td width="50%"><img src="docs/screenshot-admin-tables.png" alt="Admin flights and bookings tables"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Admin dashboard — occupancy, revenue, and activity at a glance</sub></td>
+    <td align="center"><sub>Upcoming flights and recent bookings</sub></td>
+  </tr>
+</table>
 
 ---
 
