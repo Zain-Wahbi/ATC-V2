@@ -72,6 +72,10 @@ This project started as a university assignment: a bare-bones PHP/MySQL airline 
 
 It was also built the way a real engineering team works: two developers, a shared GitHub Projects board, feature branches, mandatory PR review, and protected `main`. Several of the bugs described below were caught during that review process — not hypothetical, actually shipped and actually fixed.
 
+<p align="center">
+  <img src="docs/screenshot-kanban.png" width="85%" alt="GitHub Projects Kanban board showing Todo/In Progress/Done columns">
+</p>
+
 ---
 
 ## Technical Highlights
